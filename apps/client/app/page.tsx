@@ -5,9 +5,8 @@ import { redirect } from 'next/navigation';
 export default function Home() {
   async function createNewLobby() {
     'use server'
-    console.log("ASDASDASDSDASDA")
     try {
-      const res = await (await fetch ('http://localhost:8080/lobby')).json()
+      const res = await (await fetch ('/api/lobby')).json()
       redirect(`/lobby/${res.id}`)
     } catch (err) {
       if (err.message === 'NEXT_REDIRECT') throw err

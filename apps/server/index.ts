@@ -463,7 +463,7 @@ const server = Bun.serve<WSState>({
 	fetch(req, server) {
     const url = new URL(req.url);
 		
-    if (url.pathname === "/ws") {
+    if (url.pathname === "/api/ws") {
 			const lobby = lobbies.get(url.searchParams.get("lobby") ?? "");
 			const iam = url.searchParams.get("iam") || ulid();
 			if (!lobby) {
@@ -475,7 +475,7 @@ const server = Bun.serve<WSState>({
         : new Response("WebSocket upgrade error", { status: 400 });
     }
 
-		if (url.pathname === "/lobby") {
+		if (url.pathname === "/api/lobby") {
 			const lobby = lobbies.get(url.searchParams.get("id") ?? "");
 			if (lobby) {
 				return new Response(JSON.stringify(lobby.repr()), {

@@ -26,10 +26,8 @@ interface IGameState {
 export const GameStateContext = createContext<IGameState>({} as IGameState)
 
 export default function GameProvider ({ lobbyId, iam }: { lobbyId: string, iam?: string }) {
-	const { data, error, mutate, isLoading } = useSWR<IGameState['lobby']>(`http://localhost:8080/lobby?id=${lobbyId}`, fetcher)
+	const { data, error, mutate, isLoading } = useSWR<IGameState['lobby']>(`/api/lobby?id=${lobbyId}`, fetcher)
 	const [player, setPlayer] = useState<IGameState['player']>()
-
-	console.log({ iam})
 
 	if (data?.id && data?.id !== lobbyId) {
 		redirect(`/lobby/${data.id}`)
@@ -40,7 +38,7 @@ export default function GameProvider ({ lobbyId, iam }: { lobbyId: string, iam?:
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isLoading || socket) return
-		const ws = new WebSocket(`ws://localhost:8080/ws?lobby=${lobbyId}${iam ? `&iam=${iam}` : ''}`)
+		const ws = new WebSocket(`ws://${window.location.host}/api/ws?lobby=${lobbyId}${iam ? `&iam=${iam}` : ''}`)
 		setSocket(ws)
 		ws.onmessage = (e) => {
 			const msg = JSON.parse(e.data)
