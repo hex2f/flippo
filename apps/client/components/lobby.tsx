@@ -44,11 +44,13 @@ export default function Lobby () {
 function SetName () {
 	const { socket } = useContext(GameStateContext)
 	const [loading, setLoading] = useState(false)
+	const [memoName] = useState(localStorage.getItem('name') || '')
 
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setLoading(true)
 		const input = e.currentTarget.querySelector('input') as HTMLInputElement
+		localStorage.setItem('name', input.value)
 		socket?.send(JSON.stringify({ e: 'set_name', d: input.value }))
 	}
 
@@ -56,7 +58,7 @@ function SetName () {
 		<div className="flex flex-col gap-2">
 			<h1 className="text-lg">What&apos;s your name?</h1>
 			<form className="flex gap-2" onSubmit={onSubmit}>
-				<Input type="text" placeholder="Benim Benimisimo" disabled={loading} maxLength={32} />
+				<Input type="text" placeholder="Benim Benimisimo" disabled={loading} maxLength={32} defaultValue={memoName} />
 				<Button size={'icon'} type="submit" className="shrink-0" disabled={loading}>
 					<ChevronRightIcon />
 				</Button>
