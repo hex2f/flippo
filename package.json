@@ -1,0 +1,10 @@
+{
+  "name": "flippo",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "apps/*"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,231 @@
+[
+  {
+    "count": 5,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1],
+        [1],
+        [1]
+      ]
+    }
+  },
+
+  {
+    "count": 5,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,0],
+        [1,1]
+      ]
+    }
+  },
+
+  {
+    "count": 2,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,0],
+        [1,0],
+        [1,1]
+      ]
+    }
+  },
+
+  {
+    "count": 2,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,1],
+        [1,1]
+      ]
+    }
+  },
+  {
+    "count": 2,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1],
+        [1],
+        [1],
+        [1]
+      ]
+    }
+  },
+
+  {
+    "count": 2,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,0],
+        [1,1],
+        [1,0]
+      ]
+    }
+  },
+
+  {
+    "count": 2,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,0],
+        [1,1],
+        [0,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1],
+        [1],
+        [1],
+        [1],
+        [1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,1,1],
+        [1,1,0],
+        [0,1,0]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,1],
+        [0,1],
+        [0,1],
+        [1,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,1],
+        [1,1],
+        [0,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,1],
+        [0,1],
+        [1,1],
+        [1,0]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,1,1],
+        [0,1,0],
+        [0,1,0]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,0,1],
+        [1,1,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,0,1],
+        [0,0,1],
+        [1,1,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [1,0,0],
+        [1,1,0],
+        [0,1,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,1,0],
+        [1,1,1],
+        [0,1,0]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,1],
+        [1,1],
+        [0,1],
+        [0,1]
+      ]
+    }
+  },
+
+  {
+    "count": 1,
+    "card": {
+      "type": "tetrino",
+      "shape": [
+        [0,1,1],
+        [0,1,0],
+        [1,1,0]
+      ]
+    }
+  }
+]
