@@ -38,7 +38,7 @@ export default function GameProvider ({ lobbyId, iam }: { lobbyId: string, iam?:
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isLoading || socket) return
-		const ws = new WebSocket(`ws://${window.location.host}/api/ws?lobby=${lobbyId}${iam ? `&iam=${iam}` : ''}`)
+		const ws = new WebSocket(`${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/api/ws?lobby=${lobbyId}${iam ? `&iam=${iam}` : ''}`)
 		setSocket(ws)
 		ws.onmessage = (e) => {
 			const msg = JSON.parse(e.data)
