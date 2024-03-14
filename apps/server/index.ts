@@ -188,7 +188,7 @@ export class Lobby {
 	deal() {
 		this.turn += 1;
 		for (const player of this.players.values()) {
-			player.hand = this.cardStack.splice(0, 3);
+			player.hand = this.cardStack.splice(0, 8);
 			player.turn = { pick: null, play: null };
 			player.sendState();
 		}
