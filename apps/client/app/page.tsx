@@ -9,7 +9,9 @@ export default function Home() {
       const res = await (await fetch ('/api/lobby')).json()
       redirect(`/lobby/${res.id}`)
     } catch (err) {
+      // @ts-expect-error
       if (err.message === 'NEXT_REDIRECT') throw err
+      // @ts-expect-error
       console.log(err.message)
     }
   }
