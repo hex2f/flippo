@@ -155,7 +155,7 @@ export function PlacableBoard({ player }: { player: ReturnType<Player['privateRe
 	)
 }
 
-function tryPlace(player: ReturnType<Player['privateRepr']>, xy: [number, number] | null, cardShape: number[][] | undefined) {
+function tryPlace(player: ReturnType<Player['privateRepr']>, xy: [number, number] | null, cardShape: number[][] | undefined): [ReturnType<Player['publicRepr']>['board'], boolean] {
 	if (player.turn.pick?.type !== 'tetrino' || xy?.[0] === undefined || !xy?.[1] === undefined || !cardShape) return [player.board, false]
 
 	const color = player.turn.pick?.color as number
