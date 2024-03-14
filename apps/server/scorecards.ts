@@ -472,90 +472,63 @@ export const cards = [
 		type: 'score',
 		label: '3 points for each tile in the longest red line (includes diagonals)',
 		rule: (board: number[][], request: string) => {
-			let longest = 0
-			for (let i = 0; i < board.length; i++) {
-				for (let j = 0; j < board.length; j++) {
-					let count = 0
-					for (let k = 0; k < board.length; k++) {
-						if (i + k < board.length && j + k < board.length && board[i + k][j + k] === SquareColor.Red) {
-							count++
-						} else {
-							break
-						}
-					}
-					longest = Math.max(longest, count)
-					count = 0
-					for (let k = 0; k < board.length; k++) {
-						if (i - k >= 0 && j + k < board.length && board[i - k][j + k] === SquareColor.Red) {
-							count++
-						} else {
-							break
-						}
-					}
-					longest = Math.max(longest, count)
-				}
-			}
-			return longest * 3
+			return calculateLongestLine(board, SquareColor.Red) * 3;
 		}
 	},
 	{
 		type: 'score',
 		label: '3 points for each tile in the longest blue line (includes diagonals)',
 		rule: (board: number[][], request: string) => {
-			let longest = 0
-			for (let i = 0; i < board.length; i++) {
-				for (let j = 0; j < board.length; j++) {
-					let count = 0
-					for (let k = 0; k < board.length; k++) {
-						if (i + k < board.length && j + k < board.length && board[i + k][j + k] === SquareColor.Blue) {
-							count++
-						} else {
-							break
-						}
-					}
-					longest = Math.max(longest, count)
-					count = 0
-					for (let k = 0; k < board.length; k++) {
-						if (i - k >= 0 && j + k < board.length && board[i - k][j + k] === SquareColor.Blue) {
-							count++
-						} else {
-							break
-						}
-					}
-					longest = Math.max(longest, count)
-				}
-			}
-			return longest * 3
+			return calculateLongestLine(board, SquareColor.Blue) * 3;
 		}
 	},
 	{
 		type: 'score',
 		label: '3 points for each tile in the longest green line (includes diagonals)',
 		rule: (board: number[][], request: string) => {
-			let longest = 0
-			for (let i = 0; i < board.length; i++) {
-				for (let j = 0; j < board.length; j++) {
-					let count = 0
-					for (let k = 0; k < board.length; k++) {
-						if (i + k < board.length && j + k < board.length && board[i + k][j + k] === SquareColor.Green) {
-							count++
-						} else {
-							break
-						}
-					}
-					longest = Math.max(longest, count)
-					count = 0
-					for (let k = 0; k < board.length; k++) {
-						if (i - k >= 0 && j + k < board.length && board[i - k][j + k] === SquareColor.Green) {
-							count++
-						} else {
-							break
-						}
-					}
-					longest = Math.max(longest, count)
-				}
-			}
-			return longest * 3
+			return calculateLongestLine(board, SquareColor.Green) * 3;
 		}
 	},
 ]
+
+const calculateLongestLine = (board: SquareColor[][], color: SquareColor): number => {
+	const numRows = board.length;
+	const numCols = board[0].length;
+	let maxLineLength = 0;
+
+	// Helper function to check if a position is within bounds
+	const isValidPosition = (row: number, col: number): boolean => {
+			return row >= 0 && row < numRows && col >= 0 && col < numCols;
+	};
+
+	// Helper function to explore in all directions from a given position
+	const walkFrom = (row: number, col: number, direction: [number, number]): number => {
+			if (!isValidPosition(row, col) || board[row][col] !== color) {
+					return 0;
+			}
+			
+			let length = 1;
+			const [dx, dy] = direction;
+			const [newRow, newCol] = [row + dx, col + dy];
+			length += walkFrom(newRow, newCol, direction);
+			return length;
+	};
+
+	// Iterate through the entire board and find the longest line
+	for (let row = 0; row < numRows; row++) {
+			for (let col = 0; col < numCols; col++) {
+					if (board[row][col] === color) {
+							// Explore in all 8 directions
+							const directions = [
+									[0, 1], [0, -1], [1, 0], [-1, 0],
+									[1, 1], [1, -1], [-1, 1], [-1, -1]
+							] as [number, number][];
+							for (const direction of directions) {
+									maxLineLength = Math.max(maxLineLength, walkFrom(row, col, direction));
+							}
+					}
+			}
+	}
+
+	return maxLineLength;
+};

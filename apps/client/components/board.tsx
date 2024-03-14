@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils";
 import { Player, SquareColor } from "@flippo/server/types";
 import { useContext, useMemo, useState } from "react";

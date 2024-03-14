@@ -43,6 +43,8 @@ export class Player {
 			turn: this.turn,
 			name: this.name,
 			score: this.score,
+			scoreRules: this.scoreRules,
+			scoreStack: this.scoreStack,
 			connected: this.connected,
 			ready: this.ready,
 		}

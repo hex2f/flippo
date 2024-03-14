@@ -1,17 +1,22 @@
 'use client'
 
 import { cn } from "@/lib/utils";
-import { CardType, SquareColor } from "@flippo/server/types";
-import { useContext, useState } from "react";
+import { CardType, Player, SquareColor } from "@flippo/server/types";
+import { useContext, useEffect, useState } from "react";
 import { GameStateContext } from "./game_context";
 import { motion } from 'framer-motion'
+import useSound from 'use-sound';
 
 export default function Hand ({ hand }: { hand: CardType[] }) {
 	const { socket, player } = useContext(GameStateContext)
-	
+
+	const [playFlipSound] = useSound('/pick.mp3', { volume: 0.25 })
+
 	const pick = (card: CardType) => {
 		socket?.send(JSON.stringify({ e: 'pick', d: card.id }))
+		playFlipSound()
 	}
+
 
 	if (player?.turn.pick) {
 		return <motion.div layout layoutId="hand" className="my-4" transition={{ delay: 0.1 }} />
@@ -32,7 +37,7 @@ export default function Hand ({ hand }: { hand: CardType[] }) {
 						className="group cursor-pointer"
 						onKeyDown={() => {}}
 						onClick={() => pick(card)}>
-						<Card card={card} className="relative group-hover:scale-150 group-hover:-translate-y-28 transition-transform z-0 group-hover:z-10" />
+						<Card card={card} className="relative group-hover:scale-150 group-hover:-translate-y-28 transition-transform z-0 group-hover:z-10" player={player as ReturnType<Player['publicRepr']>} />
 					</div>
 				</motion.div>
 			))}
@@ -40,14 +45,14 @@ export default function Hand ({ hand }: { hand: CardType[] }) {
 	)
 }
 
-export function Card ({ card, className, show = true }: { card: CardType, className?: string, show?: boolean }) {
+export function Card ({ card, className, player, show = true }: { card: CardType, className?: string, player: ReturnType<Player['publicRepr']>, show?: boolean }) {
 	const [shouldReveal, setShouldReveal] = useState(show ? false : true)
 
 	return (
 		<div className={cn("h-40 w-28 bg-white border border-gray-200 rounded-md flex items-center justify-center overflow-hidden", className, shouldReveal && show ? 'animate-3d-spin' : null)}>
 			<div className={cn(shouldReveal && show ? 'animate-3d-spin-card-reveal' : null)}>
 				{show
-					? card.type === 'tetrino' ? <Tetrino card={card} /> : <ScoreCard card={card} />
+					? card.type === 'tetrino' ? <Tetrino card={card} /> : <ScoreCard card={card} player={player} />
 					: <span className="text-4xl text-gray-300">?</span>
 				}
 			</div>
@@ -83,8 +88,7 @@ function Tetrino ({ card }: { card: CardType }) {
 	)
 }
 
-function ScoreCard ({ card }: { card: CardType }) {
-	const { player } = useContext(GameStateContext)
+function ScoreCard ({ card, player }: { card: CardType, player: ReturnType<Player['publicRepr']> }) {
 	if (card.type !== 'score') return null
 	return (
 		<div className="flex flex-col items-center justify-center p-3 gap-2">

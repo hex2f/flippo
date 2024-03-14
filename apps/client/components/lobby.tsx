@@ -31,7 +31,7 @@ export default function Lobby () {
 			) : (
 				<Button
 					onClick={() => state.socket?.send(JSON.stringify({ e: 'ready' }))}
-					className="bg-green-600 hover:bg-green-700 text-white flex gap-2 mt-2"
+					className="bg-green-600 hover:bg-green-700 text-white flex gap-2 mt-8"
 				>
 					<CheckIcon />
 					Go Ready

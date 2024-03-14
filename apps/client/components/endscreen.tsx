@@ -1,3 +1,5 @@
+"use client"
+
 import { useContext } from "react"
 import { GameStateContext } from "./game_context"
 import { Button } from "./ui/button"

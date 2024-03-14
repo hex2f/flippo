@@ -168,6 +168,10 @@ export class Lobby {
 				this.machine.send({ type: 'restart' });
 				break
 			}
+			case "get_state": {
+				player.sendState();
+				break
+			}
 		}
 		player.sendState();
 	}
@@ -185,6 +189,12 @@ export class Lobby {
 	deal() {
 		this.turn += 1;
 		for (const player of this.players.values()) {
+			if (this.cardStack.length < 8) {
+				this.cardStack = [
+					...JSON.parse(JSON.stringify(tetrinos)),
+					...scorecards
+				].sort(() => Math.random() - 0.5) // deep clone and shuffle
+			}
 			player.hand = this.cardStack.splice(0, 8);
 			player.turn = { pick: null, play: null };
 			player.sendState();
@@ -402,7 +412,7 @@ const lobbies = new Map<string, Lobby>();
 type WSState = { iam: string, lobby: Lobby }
 
 const server = Bun.serve<WSState>({
-	port: process.env.PORT ?? 8080,
+	port: process.env.PORT ?? 3031,
 	fetch(req, server) {
     const url = new URL(req.url);
 		
