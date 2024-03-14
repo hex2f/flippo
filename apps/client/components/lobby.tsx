@@ -54,9 +54,9 @@ function SetName () {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<h1 className="text-lg">Set your name</h1>
+			<h1 className="text-lg">What&apos;s your name?</h1>
 			<form className="flex gap-2" onSubmit={onSubmit}>
-				<Input type="text" placeholder="Your name" disabled={loading} />
+				<Input type="text" placeholder="Benim Benimisimo" disabled={loading} maxLength={32} />
 				<Button size={'icon'} type="submit" className="shrink-0" disabled={loading}>
 					<ChevronRightIcon />
 				</Button>

@@ -41,7 +41,6 @@ export class Lobby {
 		this.machine = createGameMachine(this);
 		this.machine.subscribe((state) => {
 			this.broadcastState()
-			console.log(state.value)
 			switch (state.value) {
 				case "dealing":
 					this.deal()
@@ -62,7 +61,6 @@ export class Lobby {
 					this.rotateHands()
 					break
 			}
-			console.log('passed')
 		})
 		this.machine.start()
 	}
@@ -84,8 +82,7 @@ export class Lobby {
 		const { e, d } = JSON.parse(message);
 		switch (e) {
 			case "set_name": {
-				player.name = d;
-				console.log("set name", player.privateRepr())
+				player.name = d.slice(0, 32);
 				this.broadcastState();
 				break;
 			}
@@ -212,8 +209,6 @@ export class Lobby {
 				player.scoreRules[card.id] = score;
 				return acc + score;
 			}, 0);
-
-			console.log('scored', player.id, player.score, requestId)
 
 			player.sendState();
 		}
@@ -456,7 +451,6 @@ const server = Bun.serve<WSState>({
 				player.connected = true
 				player.ws = ws
 				ws.data.lobby.broadcastState()
-				console.log("player reconnected", player.privateRepr())
 				player?.sendState()
 			} else {
 				if (ws.data.lobby.machine.getSnapshot().value !== "lobby") {
@@ -466,7 +460,6 @@ const server = Bun.serve<WSState>({
 				const newPlayer = ws.data.lobby.addPlayer(ws, "")
 				iams.set(ws.data.iam, newPlayer.id)
 				ws.data.lobby.broadcastState()
-				console.log("new player", newPlayer.privateRepr())
 				newPlayer.sendState()
 			}
     },
