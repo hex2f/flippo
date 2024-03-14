@@ -6,7 +6,7 @@ export default function Home() {
   async function createNewLobby() {
     'use server'
     try {
-      const res = await (await fetch ('/api/lobby')).json()
+      const res = await (await fetch ('http://localhost:3031/api/lobby')).json()
       redirect(`/lobby/${res.id}`)
     } catch (err) {
       // @ts-expect-error
