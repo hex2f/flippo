@@ -192,7 +192,7 @@ export class Lobby {
 			if (this.scoreStack.length < 2) {
 				this.scoreStack = [...scorecards].sort(() => Math.random() - 0.5);
 			}
-			player.hand = [...this.tetrinoStack.slice(0, 6), ...this.scoreStack.slice(0, 2)].sort(() => Math.random() - 0.5);
+			player.hand = [...this.tetrinoStack.splice(0, 6), ...this.scoreStack.splice(0, 2)].sort(() => Math.random() - 0.5);
 			player.turn = { pick: null, play: null };
 			player.sendState();
 		}
