@@ -30,10 +30,8 @@ export class Lobby {
 	machine: ReturnType<typeof createGameMachine>;
 	players: Map<string, Player> = new Map();
 	skippedPlay = false;
-	cardStack: CardType[] = [
-		...JSON.parse(JSON.stringify(tetrinos)),
-		...scorecards
-	].sort(() => Math.random() - 0.5) // deep clone and shuffle
+	tetrinoStack: CardType[] = [...JSON.parse(JSON.stringify(tetrinos))].sort(() => Math.random() - 0.5)
+	scoreStack: CardType[] = [...scorecards].sort(() => Math.random() - 0.5);
 	turn = 0;
 
 	constructor() {
@@ -117,7 +115,8 @@ export class Lobby {
 					if (x < 0 || x >= 7 || y < 0 || y >= 7) {
 						canPlace = false;
 					}
-					if (newBoard[y][x] !== 0) {
+					const boardFilled = newBoard.every(row => row.every(cell => cell !== SquareColor.Blank))
+					if (newBoard[y][x] !== 0 && !boardFilled) {
 						canPlace = false;
 					}
 					newBoard[y][x] = card.color;
@@ -149,10 +148,8 @@ export class Lobby {
 				if (this.machine.getSnapshot().value !== "ended") return;
 				this.turn = 0;
 				this.skippedPlay = false;
-				this.cardStack = [
-					...JSON.parse(JSON.stringify(tetrinos)),
-					...scorecards
-				].sort(() => Math.random() - 0.5) // deep clone and shuffle
+				this.tetrinoStack = [...JSON.parse(JSON.stringify(tetrinos))].sort(() => Math.random() - 0.5);
+				this.scoreStack = [...scorecards].sort(() => Math.random() - 0.5);
 				for (const player of this.players.values()) {
 					player.board = Array(7).fill(Array(7).fill(SquareColor.Blank));
 					player.hand = [];
@@ -189,13 +186,13 @@ export class Lobby {
 	deal() {
 		this.turn += 1;
 		for (const player of this.players.values()) {
-			if (this.cardStack.length < 8) {
-				this.cardStack = [
-					...JSON.parse(JSON.stringify(tetrinos)),
-					...scorecards
-				].sort(() => Math.random() - 0.5) // deep clone and shuffle
+			if (this.tetrinoStack.length < 6) {
+				this.tetrinoStack = [...JSON.parse(JSON.stringify(tetrinos))].sort(() => Math.random() - 0.5);
 			}
-			player.hand = this.cardStack.splice(0, 8);
+			if (this.scoreStack.length < 2) {
+				this.scoreStack = [...scorecards].sort(() => Math.random() - 0.5);
+			}
+			player.hand = [...this.tetrinoStack.slice(0, 6), ...this.scoreStack.slice(0, 2)].sort(() => Math.random() - 0.5);
 			player.turn = { pick: null, play: null };
 			player.sendState();
 		}

@@ -345,10 +345,10 @@ export const cards = [
 	},
 	{
 		type: 'score',
-		label: '10 points if every corner is filled',
+		label: '12 points if every corner is filled',
 		rule: (board: number[][], request: string) => {
 			if (board[0][0] !== SquareColor.Blank && board[0][board.length - 1] !== SquareColor.Blank && board[board.length - 1][0] !== SquareColor.Blank && board[board.length - 1][board.length - 1] !== SquareColor.Blank) {
-				return 10
+				return 12
 			}
 			return 0
 		}
@@ -467,6 +467,11 @@ export const cards = [
 			}
 			return score
 		}
+	},
+	{
+		type: 'score',
+		label: 'get 10 points!! :D',
+		rule: (board: number[][], request: string) => 10
 	},
 	{
 		type: 'score',
