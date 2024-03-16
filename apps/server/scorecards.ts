@@ -318,11 +318,11 @@ export const cards = [
 	},
 	{
 		type: 'score',
-		label: '3 points for each empty region',
+		label: '2 points for each empty region',
 		rule: (board: number[][], request: string) => {
 			const regions = regionCache.get(`${request}_empty`) ?? getRegions(board, SquareColor.Blank)
 			regionCache.set(`${request}_empty`, regions)
-			return regions.empty.length * 3
+			return regions.empty.length * 2
 		}
 	},
 	{
@@ -494,6 +494,40 @@ export const cards = [
 			return calculateLongestLine(board, SquareColor.Green) * 3;
 		}
 	},
+	{
+		type: 'score',
+		label: '18 points if you have no fully filled row',
+		rule: (board: number[][], request: string) => {
+			for (let i = 0; i < board.length; i++) {
+				let filled = true
+				for (let j = 0; j < board.length; j++) {
+					if (board[i][j] === SquareColor.Blank) {
+						filled = false
+						break
+					}
+				}
+				if (filled) return 0
+			}
+			return 18
+		},
+	},
+	{
+		type: 'score',
+		label: '18 points if you have no fully filled column',
+		rule: (board: number[][], request: string) => {
+			for (let i = 0; i < board.length; i++) {
+				let filled = true
+				for (let j = 0; j < board.length; j++) {
+					if (board[j][i] === SquareColor.Blank) {
+						filled = false
+						break
+					}
+				}
+				if (filled) return 0
+			}
+			return 18
+		},
+	}
 ]
 
 const calculateLongestLine = (board: SquareColor[][], color: SquareColor): number => {
