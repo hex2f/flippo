@@ -2,16 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { Player, SquareColor } from "@flippo/server/types";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { colors } from "./hand";
 import { GameStateContext } from "./game_context";
+import useSound from "use-sound";
 
 export default function Board({ board, className, onCellHover, onBoardLeave }: { board: ReturnType<Player['publicRepr']>['board'], className?: string, onCellHover?: (i: number, j: number) => void, onBoardLeave?: () => void }) {
 	return (
 		<div className={cn("grid grid-rows-7 grid-cols-7 gap-0 border border-gray-200 h-64 w-64", className)} onMouseLeave={onBoardLeave}>
 			{board.map((row, i) => (
 				row.map((cell, j) => (
-					<div key={`x${j}y${i}-${cell}`} className={cn("p-1 border border-gray-100", colors[cell])} onMouseEnter={() => onCellHover?.(i, j)}>
+					<div key={`x${j}y${i}-${cell}`} onMouseEnter={() => onCellHover?.(i, j)} className={cn("p-1 border border-gray-100", colors[cell])}>
 						{cell > 0 ? <div className="h-full w-full bg-white bg-opacity-20" /> : null}
 					</div>
 				))
@@ -47,6 +48,8 @@ export function PlacableBoard({ player }: { player: ReturnType<Player['privateRe
 	const [flipped, setFlipped] = useState(false)
 	const [override1x1, setOverride1x1] = useState<SquareColor | null>(null)
 	const { socket } = useContext(GameStateContext)
+	
+	const [playPlopSound] = useSound('/plop.mp3', { volume: 0.3 })
 
 	const cardShape = useMemo(() => {
 		if (player.turn.pick?.type !== 'tetrino' || !player.turn.pick.shape) return 
@@ -123,7 +126,6 @@ export function PlacableBoard({ player }: { player: ReturnType<Player['privateRe
 	}
 	
 	const onClick = (e: React.MouseEvent) => {
-		console.log('click', e.button)
 		if (e.button === 2) {
 			onRightClick(e)
 			return
@@ -134,6 +136,7 @@ export function PlacableBoard({ player }: { player: ReturnType<Player['privateRe
 			} else {
 				socket?.send(JSON.stringify({ e: 'play', d: { x: xy?.[0], y: xy?.[1], card: { ...player.turn.pick, shape: cardShape } } }))
 			}
+			playPlopSound()
 		}
 	}
 
@@ -152,7 +155,7 @@ export function PlacableBoard({ player }: { player: ReturnType<Player['privateRe
 					</div>
 				</div>
 			)}
-			<Board board={board} className="" onCellHover={onMouseEnter} onBoardLeave={onMouseLeave} />
+			<Board key={player.id} board={board} className="" onCellHover={onMouseEnter} onBoardLeave={onMouseLeave} />
 		</div>
 	)
 }

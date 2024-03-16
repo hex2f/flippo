@@ -85,6 +85,12 @@ const config = {
           "0%": { opacity: "0" },
           "50%": { opacity: "0" },
           "75%": { opacity: "1" },
+        },
+        "tile-drop": {
+          "0%": { transform: "scale(1)", opacity: "0.5" },
+          "10%": { transform: "scale(1)", opacity: "0" },
+          "35%": { transform: "scale(1.25)", opacity: "0.5" },
+          "100%": { transform: "scale(1)", opacity: "1" },
         }
       },
       animation: {
@@ -93,6 +99,7 @@ const config = {
         "3d-flip": "3d-flip 0.6s ease-in-out",
         "3d-spin": "3d-spin 0.4s ease-in-out",
         "3d-spin-card-reveal": "fade-in-50 0.4s ease-in-out",
+        "tile-drop": "tile-drop 0.3s ease-in-out forwards",
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],

@@ -18,7 +18,7 @@ export default function Game () {
 	}
 
 	return (
-		<div>
+		<div className="h-full">
 			<div className="absolute bottom-0 inset-x-0 flex flex-col items-center">
 				<motion.div layout layoutId="board" className="flex">
 					<div className="w-48 relative">
@@ -36,7 +36,7 @@ export default function Game () {
 						))}
 						<span className="text-gray-500 text-lg bg-opacity-50 px-1 absolute right-1">{myself.score}</span>
 					</div>
-					{state.lobby.state === 'playing' && !myself.turn.play ? <PlacableBoard player={myself} /> : <Board board={myself.board} />}
+					{state.lobby.state === 'playing' && !myself.turn.play ? <PlacableBoard player={myself} key={myself.id} /> : <Board board={myself.board} key={myself.id} />}
 					<div className="w-48 relative">
 						{myself.tetrinoStack.map((card, i) => (
 							<motion.div
@@ -51,7 +51,7 @@ export default function Game () {
 					</div>
 				</motion.div>
 				<AnimatePresence>
-					{myself.turn.pick && (
+					{myself.turn.pick && (!myself.turn.play || myself.turn.play.type === 'score') && (
 					<motion.div
 						animate={{ y: 0, x: 0, scale: 1, opacity: 1 }}
 						initial={{ y: 32, x: 0, scale: 1, opacity: 0 }}
@@ -93,15 +93,15 @@ function OtherBoard({ player, i, others }: { player: ReturnType<Player['publicRe
 			</div>
 			<AnimatePresence>
 				<div className="flex justify-between absolute w-full">
-					{!player.turn.pick
-						? null
-						: <motion.div
+					{player.turn.pick
+						? <motion.div
 								animate={{ y: 0, x: 0, scale: 1, opacity: 1 }}
 								initial={{ y: -32, x: 0, scale: 1, opacity: 0 }}
 								exit={{ y: player.turn.pick.type === 'score' ? 0 : 8, x: player.turn.pick.type === 'score' ? 16 : 0, opacity: 0 }}
 							>
 							<Card key={player.turn.pick.id} card={player.turn.pick} show={state.lobby?.state !== 'picking'} className="mt-2" player={player} />
 						</motion.div>
+						: null
 					}
 					<div className="relative w-full">
 						{player.scoreStack.map((card, i) => (

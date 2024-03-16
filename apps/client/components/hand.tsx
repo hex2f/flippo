@@ -10,7 +10,7 @@ import useSound from 'use-sound';
 export default function Hand ({ hand }: { hand: CardType[] }) {
 	const { socket, player } = useContext(GameStateContext)
 
-	const [playFlipSound] = useSound('/pick.mp3', { volume: 0.25 })
+	const [playFlipSound] = useSound('/pick.mp3', { volume: 0.4 })
 
 	const pick = (card: CardType) => {
 		socket?.send(JSON.stringify({ e: 'pick', d: card.id }))

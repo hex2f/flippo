@@ -64,7 +64,7 @@ const regionCache = new Map<string, ReturnType<typeof getRegions>>()
 export const cards = [
 	{
 		type: 'score',
-		label: '5 point for each tile in the side length of the largest red square region',
+		label: '6 point for each tile in the side length of the largest red square region',
 		rule: (board: number[][], request: string) => {
 			// run convolution, starting at board size - 1 and ending at 1 to find the largest square region
 			// if a region is found, return the square root of the number of tiles in the region * 5
@@ -81,7 +81,7 @@ export const cards = [
 							}
 							if (!found) break
 						}
-						if (found) return i * 5
+						if (found) return i * 6
 					}
 				}
 			}
@@ -89,7 +89,7 @@ export const cards = [
 	},
 	{
 		type: 'score',
-		label: '5 point for each tile in the side length of the largest blue square region',
+		label: '6 point for each tile in the side length of the largest blue square region',
 		rule: (board: number[][], request: string) => {
 			for (let i = board.length - 1; i >= 1; i--) {
 				for (let j = 0; j < board.length - i; j++) {
@@ -104,7 +104,7 @@ export const cards = [
 							}
 							if (!found) break
 						}
-						if (found) return i * 5
+						if (found) return i * 6
 					}
 				}
 			}
@@ -112,7 +112,7 @@ export const cards = [
 	},
 	{
 		type: 'score',
-		label: '5 point for each tile in the side length of the largest green square region',
+		label: '6 point for each tile in the side length of the largest green square region',
 		rule: (board: number[][], request: string) => {
 			for (let i = board.length - 1; i >= 1; i--) {
 				for (let j = 0; j < board.length - i; j++) {
@@ -127,7 +127,7 @@ export const cards = [
 							}
 							if (!found) break
 						}
-						if (found) return i * 5
+						if (found) return i * 6
 					}
 				}
 			}
@@ -162,29 +162,29 @@ export const cards = [
 	},
 	{
 		type: 'score',
-		label: '8 points for each red region of 6 or more tiles',
+		label: '10 points for each red region of 6 or more tiles',
 		rule: (board: number[][], request: string) => {
 			const regions = regionCache.get(`${request}_red`) ?? getRegions(board, SquareColor.Red)
 			regionCache.set(`${request}_red`, regions)
-			return regions.red.filter((size) => size >= 6).length * 8
+			return regions.red.filter((size) => size >= 6).length * 10
 		}
 	},
 	{
 		type: 'score',
-		label: '8 points for each blue region of 6 or more tiles',
+		label: '10 points for each blue region of 6 or more tiles',
 		rule: (board: number[][], request: string) => {
 			const regions = regionCache.get(`${request}_blue`) ?? getRegions(board, SquareColor.Blue)
 			regionCache.set(`${request}_blue`, regions)
-			return regions.blue.filter((size) => size >= 6).length * 8
+			return regions.blue.filter((size) => size >= 6).length * 10
 		}
 	},
 	{
 		type: 'score',
-		label: '8 points for each green region of 6 or more tiles',
+		label: '10 points for each green region of 6 or more tiles',
 		rule: (board: number[][], request: string) => {
 			const regions = regionCache.get(`${request}_green`) ?? getRegions(board, SquareColor.Green)
 			regionCache.set(`${request}_green`, regions)
-			return regions.green.filter((size) => size >= 6).length * 8
+			return regions.green.filter((size) => size >= 6).length * 10
 		}
 	},
 	{

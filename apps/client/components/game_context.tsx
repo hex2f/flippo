@@ -112,17 +112,20 @@ function GameState() {
 		case 'playing':
 		case 'rotating draft':
 		case 'scoring':
+		case 'ended':
 			return <motion.div
 			animate={{ scale: 1, opacity: 1 }}
 			initial={{ scale: 1.1, opacity: 0 }}
 			exit={{ scale: 0.9, opacity: 0 }}
-		><Game /></motion.div>
-		case 'ended':
-			return <motion.div
+		>
+			<Game />
+			{state.lobby.state === 'ended' && <motion.div
 				animate={{ scale: 1, opacity: 1 }}
-				initial={{ scale: 1.1, opacity: 0 }}
-				exit={{ scale: 0.9, opacity: 0 }}
-			><EndScreen /></motion.div>
+				initial={{ scale: 0.8, opacity: 0 }}
+				exit={{ scale: 0.8, opacity: 0 }}
+				className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30"
+			><EndScreen /></motion.div>}
+		</motion.div>
 	}
 	return <div>Unknown state</div>
 }

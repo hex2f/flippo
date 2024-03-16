@@ -140,7 +140,8 @@ export class Lobby {
 				if (canPlace) {
 					player.board = newBoard;
 				}
-				player.turn.play = card;
+				player.turn.play = player.turn.pick;
+				player.tetrinoStack.push(player.turn.pick);
 				this.machine.send({ type: 'play' });
 				break
 			}
@@ -204,8 +205,6 @@ export class Lobby {
 		for (const player of this.players.values()) {
 			if (player.turn.play?.type === 'score') {
 				player.scoreStack.push(player.turn.play);
-			} else if (player.turn.play?.type === 'tetrino') {
-				player.tetrinoStack.push(player.turn.play);
 			}
 
 			const requestId = ulid();
@@ -219,7 +218,7 @@ export class Lobby {
 
 			player.sendState();
 		}
-		this.machine.send({ type: 'scored' });
+		setTimeout(() => this.machine.send({ type: 'scored' }), 500); // delay to allow animations to finish
 	}
 
 	rotateHands() {
