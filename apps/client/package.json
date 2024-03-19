@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@discord/embedded-app-sdk": "^1.0.0",
     "@flippo/server": "*",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
