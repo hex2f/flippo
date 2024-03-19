@@ -34,8 +34,8 @@ export class Lobby {
 	scoreStack: CardType[] = [...scorecards].sort(() => Math.random() - 0.5);
 	turn = 0;
 
-	constructor() {
-		this.id = ulid();
+	constructor(id?: string) {
+		this.id = id ?? ulid();
 		this.machine = createGameMachine(this);
 		this.machine.subscribe((state) => {
 			this.broadcastState()
@@ -425,7 +425,8 @@ const server = Bun.serve<WSState>({
     }
 
 		if (url.pathname === "/api/lobby") {
-			const lobby = lobbies.get(url.searchParams.get("id") ?? "");
+			const lobbyId = url.searchParams.get("id") ?? ""
+			const lobby = lobbies.get(lobbyId);
 			if (lobby) {
 				return new Response(JSON.stringify(lobby.repr()), {
 					headers: {
@@ -435,7 +436,7 @@ const server = Bun.serve<WSState>({
 				});
 			}
 
-			const newLobby = new Lobby();
+			const newLobby = new Lobby(lobbyId);
 			lobbies.set(newLobby.id, newLobby);
 			return new Response(JSON.stringify(newLobby), {
 				headers: {

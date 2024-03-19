@@ -9,7 +9,7 @@ import useSound from "use-sound";
 
 export default function Board({ board, className, onCellHover, onBoardLeave }: { board: ReturnType<Player['publicRepr']>['board'], className?: string, onCellHover?: (i: number, j: number) => void, onBoardLeave?: () => void }) {
 	return (
-		<div className={cn("grid grid-rows-7 grid-cols-7 gap-0 border border-gray-200 h-64 w-64", className)} onMouseLeave={onBoardLeave}>
+		<div className={cn("grid grid-rows-7 grid-cols-7 gap-0 border border-gray-200 h-[24vh] w-[24vh]", className)} onMouseLeave={onBoardLeave}>
 			{board.map((row, i) => (
 				row.map((cell, j) => (
 					<div key={`x${j}y${i}-${cell}`} onMouseEnter={() => onCellHover?.(i, j)} className={cn("p-1 border border-gray-100", colors[cell])}>

@@ -10,7 +10,7 @@ const DiscordActivitySDK = dynamicImport(
 
 export const dynamic = "force-dynamic";
 
-export default function Home({ searchParams }: { searchParams?: { instance_id?: string } }) {
+export default async function Home({ searchParams }: { searchParams?: { instance_id?: string } }) {
   async function createNewLobby() {
     'use server'
     try {
@@ -25,11 +25,8 @@ export default function Home({ searchParams }: { searchParams?: { instance_id?: 
   }
 
   if (searchParams?.instance_id) {
-    return (
-      <main className="flex flex-col items-center justify-center flex-1">
-        <DiscordActivitySDK />
-      </main>
-    )
+    const res = await (await fetch(`http://localhost:3031/api/lobby?id=${searchParams.instance_id}`)).json()
+    redirect(`/lobby/${res.id}`)
   }
 
   return (

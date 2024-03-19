@@ -49,7 +49,7 @@ export function Card ({ card, className, player, show = true }: { card: CardType
 	const [shouldReveal, setShouldReveal] = useState(show ? false : true)
 
 	return (
-		<div className={cn("h-40 w-28 bg-white border border-gray-200 rounded-md flex items-center justify-center overflow-hidden", className, shouldReveal && show ? 'animate-3d-spin' : null)}>
+		<div className={cn("h-[16vmin] w-[11vmin] bg-white border border-gray-200 rounded-md flex items-center justify-center overflow-hidden", className, shouldReveal && show ? 'animate-3d-spin' : null)}>
 			<div className={cn(shouldReveal && show ? 'animate-3d-spin-card-reveal' : null)}>
 				{show
 					? card.type === 'tetrino' ? <Tetrino card={card} /> : <ScoreCard card={card} player={player} />
@@ -78,7 +78,7 @@ function Tetrino ({ card }: { card: CardType }) {
 			{card.shape.map((row, i) => (
 				<>
 					{row.map((cell, j) => (
-						<div key={`x${j}y${i}`} className={`${colors[(card.color * cell) as typeof card.color]} h-6 w-6 p-0.5`}>
+						<div key={`x${j}y${i}`} className={`${colors[(card.color * cell) as typeof card.color]} h-[2.5vmin] w-[2.5vmin] p-0.5`}>
 							{cell > 0 ? <div className="h-full w-full box-border bg-white bg-opacity-20" /> : null}
 						</div>
 					))}
@@ -92,10 +92,10 @@ function ScoreCard ({ card, player }: { card: CardType, player: ReturnType<Playe
 	if (card.type !== 'score') return null
 	return (
 		<div className="flex flex-col items-center justify-center p-3 gap-2">
-			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png" alt="score" className="h-16 w-16 object-contain" />
-			<span className="text-2xs leading-tight text-center">{card.label}</span>
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/681px-Placeholder_view_vector.svg.png" alt="score" className="h-[8vmin] w-[8vmin] object-contain" />
+			<span className="text-[1vmin] leading-tight text-center">{card.label}</span>
 			{player?.scoreStack?.some(s => s.id === card.id) && (
-				<div className={cn("text-2xs absolute top-2 left-0 px-2 w-full flex justify-between")}>
+				<div className={cn("text-[1vmin] absolute top-2 left-0 px-2 w-full flex justify-between")}>
 					<span className="text-gray-600">Contribution</span>
 					<span className={player.scoreRules[card.id] > 0 ? 'text-green-500' : 'text-red-500'}>{player.scoreRules[card.id]}</span>
 				</div>
