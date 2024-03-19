@@ -2,7 +2,14 @@ import { Button } from '@/components/ui/button';
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation';
 
-export default function Home() {
+import dynamic from "next/dynamic"
+
+const DiscordActivitySDK = dynamic(
+	() => import("@/components/_discordsdk"),
+	{ ssr: false }
+)
+
+export default function Home({ params }: { params: { instance_id?: string }}) {
   async function createNewLobby() {
     'use server'
     try {
@@ -14,6 +21,14 @@ export default function Home() {
       // @ts-expect-error
       console.log(err.message)
     }
+  }
+
+  if (params.instance_id) {
+    return (
+      <main className="flex flex-col items-center justify-center flex-1">
+        <DiscordActivitySDK />
+      </main>
+    )
   }
 
   return (
