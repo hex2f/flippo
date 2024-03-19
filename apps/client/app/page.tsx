@@ -2,12 +2,14 @@ import { Button } from '@/components/ui/button';
 import { cookies } from 'next/headers'
 import { useSearchParams, redirect  } from 'next/navigation';
 
-import dynamic from "next/dynamic"
+import dynamicImport from "next/dynamic"
 
-const DiscordActivitySDK = dynamic(
+const DiscordActivitySDK = dynamicImport(
 	() => import("@/components/_discordsdk"),
 	{ ssr: false }
 )
+
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   const query = useSearchParams();
