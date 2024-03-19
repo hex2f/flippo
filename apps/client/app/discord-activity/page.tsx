@@ -1,5 +1,9 @@
-import DiscordActivitySDK from "../../components/_discordsdk";
-export const dynamic = "force-dynamic";
+import dynamic from "next/dynamic"
+
+const DiscordActivitySDK = dynamic(
+	() => import("@/components/_discordsdk"),
+	{ ssr: false }
+)
 
 export default async function DiscordActivityPage() {
 	return (
