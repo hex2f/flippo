@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { cookies } from 'next/headers'
-import { useSearchParams, redirect  } from 'next/navigation';
+import { redirect  } from 'next/navigation';
 
 import dynamicImport from "next/dynamic"
 
@@ -11,9 +10,7 @@ const DiscordActivitySDK = dynamicImport(
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const query = useSearchParams();
-
+export default function Home({ searchParams }: { searchParams?: { instance_id?: string } }) {
   async function createNewLobby() {
     'use server'
     try {
@@ -27,7 +24,7 @@ export default function Home() {
     }
   }
 
-  if (query.has('instance_id')) {
+  if (searchParams?.instance_id) {
     return (
       <main className="flex flex-col items-center justify-center flex-1">
         <DiscordActivitySDK />
