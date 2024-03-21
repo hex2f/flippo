@@ -436,6 +436,8 @@ const server = Bun.serve<WSState>({
 				});
 			}
 
+			if (lobbyId.length < 8 || lobbyId.length > 64) return new Response("Invalid lobby id", { status: 400 });
+
 			const newLobby = new Lobby(lobbyId);
 			lobbies.set(newLobby.id, newLobby);
 			return new Response(JSON.stringify(newLobby), {
@@ -450,6 +452,10 @@ const server = Bun.serve<WSState>({
 	},
 	websocket: {
     open(ws) {
+			if (ws.data.iam.length < 8 || ws.data.lobby.id.length < 8 || ws.data.iam.length > 64 || ws.data.lobby.id.length > 64) {
+				ws.close(4000, "Invalid iam")
+				return
+			}
 			ws.send(JSON.stringify({ e: "iam", d: ws.data.iam }))
 			ws.subscribe(ws.data.lobby.id)
 			const playerId = iams.get(ws.data.iam) ?? ""
