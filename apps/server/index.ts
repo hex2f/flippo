@@ -436,9 +436,9 @@ const server = Bun.serve<WSState>({
 				});
 			}
 
-			if (lobbyId.length < 8 || lobbyId.length > 64) return new Response("Invalid lobby id", { status: 400 });
+			if (lobbyId.length > 0 && (lobbyId.length < 8 || lobbyId.length > 64)) return new Response("Invalid lobby id", { status: 400 });
 
-			const newLobby = new Lobby(lobbyId);
+			const newLobby = new Lobby(lobbyId.length > 0 ? lobbyId : ulid());
 			lobbies.set(newLobby.id, newLobby);
 			return new Response(JSON.stringify(newLobby), {
 				headers: {
