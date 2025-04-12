@@ -5,11 +5,8 @@ FROM base AS deps
 WORKDIR /app
 
 # Copy package files
-COPY package.json ./
-COPY apps/client/package.json ./apps/client/
-COPY package-lock.json ./
-
-# Install dependencies
+COPY apps/client/package.json ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
 # Rebuild the source code only when needed
@@ -18,12 +15,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Next.js collects anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line to disable telemetry at build time
+# Next.js collects anonymous telemetry data about general usage
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Build the Next.js application
 RUN cd apps/client && npm run build
 
 # Production image, copy all the files and run next
@@ -36,21 +30,21 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Set the correct permission for prerendered pages
-RUN mkdir -p /app/apps/client/.next
+COPY --from=builder /app/apps/client/public ./public
 
-# Copy output from builder
-COPY --from=builder /app/apps/client/public ./apps/client/public
-COPY --from=builder /app/apps/client/.next/standalone ./
-COPY --from=builder /app/apps/client/.next/static ./apps/client/.next/static
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
-# Make all files accessible to non-root user
-RUN chown -R nextjs:nodejs /app
+# Automatically leverage output traces to reduce image size
+COPY --from=builder --chown=nextjs:nodejs /app/apps/client/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/client/.next/static ./.next/static
 
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "apps/client/server.js"] 
+CMD ["node", "server.js"] 

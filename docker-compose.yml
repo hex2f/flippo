@@ -5,26 +5,28 @@ services:
     build:
       context: .
       dockerfile: apps/client/Dockerfile
+    restart: always
     ports:
       - "3000:3000"
     depends_on:
       - server
-    environment:
-      - SERVER_URL=http://server:3001
-    restart: unless-stopped
-    networks:
-      - flippo-network
 
   server:
     build:
       context: .
       dockerfile: apps/server/Dockerfile
+    restart: always
     ports:
       - "3001:3001"
-    restart: unless-stopped
-    networks:
-      - flippo-network
 
-networks:
-  flippo-network:
-    driver: bridge 
+  proxy:
+    build:
+      context: .
+      dockerfile: apps/proxy/Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - client
+      - server 
