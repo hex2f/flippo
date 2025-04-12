@@ -409,8 +409,11 @@ type WSState = { iam: string, lobby: Lobby }
 
 const server = Bun.serve<WSState>({
 	port: process.env.PORT ?? 3031,
+	hostname: "0.0.0.0",
 	fetch(req, server) {
     const url = new URL(req.url);
+
+	console.log(url.pathname)
 		
     if (url.pathname === "/api/ws") {
 			const lobby = lobbies.get(url.searchParams.get("lobby") ?? "");

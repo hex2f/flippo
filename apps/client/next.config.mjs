@@ -8,7 +8,8 @@ const nextConfig = {
 				'1219687171565293638.discordsays.com'
 			]
 		}
-	}
+	},
+	output: 'standalone'
 };
 
 export default nextConfig;
